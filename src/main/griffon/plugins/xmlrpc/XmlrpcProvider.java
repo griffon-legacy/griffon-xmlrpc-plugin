@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2010 the original author or authors.
+ * Copyright 2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -10,17 +10,20 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
+ * See the License for the specific language governing pexmlrpcssions and
  * limitations under the License.
  */
+package griffon.plugins.xmlrpc;
+
+import java.util.Map;
+import groovy.lang.Closure;
+import griffon.util.CallableWithArgs;
 
 /**
  * @author Andres Almiray
  */
-
-// check to see if we already have a XmlrpcGriffonAddon
-configText = '''root.'XmlrpcGriffonAddon'.addon=true'''
-if(!(builderConfigFile.text.contains(configText))) {
-    println 'Adding XmlrpcGriffonAddon to Builder.groovy'
-    builderConfigFile.text += '\n' + configText + '\n'
+public interface XmlrpcProvider {
+    Object withXmlrpc(Map params, Closure closure);
+    
+    <T> T withXmlrpc(Map params, CallableWithArgs<T> callable);
 }

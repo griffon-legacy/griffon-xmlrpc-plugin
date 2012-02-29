@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2012 the original author or authors.
+ * Copyright 2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,22 @@
  * See the License for the specific language governing pexmlrpcssions and
  * limitations under the License.
  */
+package griffon.plugins.xmlrpc
 
-import griffon.core.GriffonClass
-import griffon.plugins.xmlrpc.XmlrpcEnhancer
+import griffon.util.CallableWithArgs
 
 /**
  * @author Andres Almiray
  */
-class XmlrpcGriffonAddon {
-    void addonPostInit(GriffonApplication app) {
-        def types = app.config.griffon?.xmlrpc?.injectInto ?: ['controller']
-        for(String type : types) {
-            for(GriffonClass gc : app.artifactManager.getClassesOfType(type)) {
-                XmlrpcEnhancer.enhance(gc.metaClass)
-            }
+final class XmlrpcEnhancer {
+    private XmlrpcEnhancer() {}
+    
+    static void enhance(MetaClass mc, XmlrpcProvider provider = XmlrpcConnector.instance) {
+        mc.withXmlrpc = {Map params, Closure closure ->
+            provider.withXmlrpc(params, closure)
+        }
+        mc.withXmlrpc = {Map params, CallableWithArgs callable ->
+            provider.withXmlrpc(params, callable)
         }
     }
 }

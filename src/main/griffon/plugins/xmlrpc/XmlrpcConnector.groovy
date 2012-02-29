@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2011 the original author or authors.
+ * Copyright 2009-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 package griffon.plugins.xmlrpc
 
-import griffon.util.ApplicationHolder
 import griffon.util.CallableWithArgs
 import java.util.concurrent.ConcurrentHashMap
 import groovy.net.xmlrpc.XMLRPCServerProxy
@@ -25,41 +24,32 @@ import groovy.net.xmlrpc.XMLRPCServerProxy
  * @author Andres Almiray
  */
 @Singleton
-class XmlrpcConnector {
+class XmlrpcConnector implements XmlrpcProvider {
     private final Map CLIENTS = new ConcurrentHashMap()
 
-    static void enhance(MetaClass mc, Object instance = null) {
-        mc.withXmlrpc = {Map params, Closure closure ->
-            XmlrpcConnector.instance.withXmlrpc(instance, params, closure)
-        }
-        mc.withXmlrpc = {Map params, CallableWithArgs callable ->
-            XmlrpcConnector.instance.withXmlrpc(instance, params, callable)
-        }
+    Object withXmlrpc(Map params, Closure closure) {
+        return doWithClient(params, closure)
     }
 
-    Object withXmlrpc(Object instance = null, Map params, Closure closure) {
-        return doWithClient(instance, params, closure)
-    }
-
-    public <T> T withXmlrpc(Object instance = null, Map params, CallableWithArgs<T> callable) {
-        return doWithClient(instance, params, callable)
+    public <T> T withXmlrpc(Map params, CallableWithArgs<T> callable) {
+        return doWithClient(params, callable)
     }
 
     // ======================================================
 
-    private doWithClient(Object instance, Map params, Closure closure) {
-        def client = configureClient(instance, params)
+    private doWithClient(Map params, Closure closure) {
+        def client = configureClient(params)
 
         if (closure) {
-            closure.delegate = proxy
+            closure.delegate = client
             closure.resolveStrategy = Closure.DELEGATE_FIRST
             return closure()
         }
         return null
     }
 
-    private <T> T doWithClient(Object instance, Map params, CallableWithArgs<T> callable) {
-        def client = configureClient(instance, params)
+    private <T> T doWithClient(Map params, CallableWithArgs<T> callable) {
+        def client = configureClient(params)
 
         if (callable) {
             callable.args = [client] as Object[]
@@ -68,24 +58,14 @@ class XmlrpcConnector {
         return null
     }
 
-    private configureClient(Object instance, Map params) {
+    private configureClient(Map params) {
         def client = null
         if (params.id) {
             String id = params.remove('id').toString()
-            if(instance != null) {
-                MetaClass mc = ApplicationHolder.application.artifactManager.findGriffonClass(instance).metaClass
-                if (mc.hasProperty(instance, id)) {
-                    client = instance."$id"
-                } else {
-                    client = makeClient(params)
-                    mc."$id" = client
-                }
-            } else {
-                client = CLIENTS[id]
-                if(client == null) {
-                    client = makeClient(params)
-                    CLIENTS[id] = client 
-                }
+            client = CLIENTS[id]
+            if(client == null) {
+                client = makeClient(params)
+                CLIENTS[id] = client 
             }
         } else {
             client = makeClient(params)
