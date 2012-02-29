@@ -110,7 +110,22 @@ default package as the `Xmlrpc` class provided by the xmlrpc plugin is defined w
             }
         }
 
-6. Run the application
+6. Create an `Xmlrpc` controller
+
+        grails create-controller xmlrpc
+
+7. Paste the following code in `grails-app/controllers/exporter/XmlrpcController.groovy`
+
+        package exporter
+        class XmlrpcController {
+            def calculatorService
+
+            def index() {
+                calculatorService.service(request, response)
+            }
+        }
+
+8. Run the application
 
         grails run-app
     
@@ -179,7 +194,7 @@ types something that is not a number the client will surely break, but the code 
     
 6. Run the application
 
-    griffon run-app
+        griffon run-app
 
 ### Java API
 
