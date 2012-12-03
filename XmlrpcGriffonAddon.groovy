@@ -16,6 +16,7 @@
 
 import griffon.core.GriffonClass
 import griffon.plugins.xmlrpc.XmlrpcEnhancer
+import griffon.plugins.xmlrpc.XmlrpcContributionHandler
 
 /**
  * @author Andres Almiray
@@ -25,6 +26,7 @@ class XmlrpcGriffonAddon {
         def types = app.config.griffon?.xmlrpc?.injectInto ?: ['controller']
         for(String type : types) {
             for(GriffonClass gc : app.artifactManager.getClassesOfType(type)) {
+                if (XmlrpcContributionHandler.isAssignableFrom(gc.clazz)) continue
                 XmlrpcEnhancer.enhance(gc.metaClass)
             }
         }

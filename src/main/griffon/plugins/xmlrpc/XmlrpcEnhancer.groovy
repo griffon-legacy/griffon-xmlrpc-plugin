@@ -10,20 +10,26 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing pexmlrpcssions and
+ * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package griffon.plugins.xmlrpc
 
 import griffon.util.CallableWithArgs
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /**
  * @author Andres Almiray
  */
 final class XmlrpcEnhancer {
+    private static final Logger LOG = LoggerFactory.getLogger(XmlrpcEnhancer)
+
     private XmlrpcEnhancer() {}
     
-    static void enhance(MetaClass mc, XmlrpcProvider provider = XmlrpcConnector.instance) {
+    static void enhance(MetaClass mc, XmlrpcProvider provider = DefaultXmlrpcProvider.instance) {
+        if(LOG.debugEnabled) LOG.debug("Enhancing $mc with $provider")
         mc.withXmlrpc = {Map params, Closure closure ->
             provider.withXmlrpc(params, closure)
         }

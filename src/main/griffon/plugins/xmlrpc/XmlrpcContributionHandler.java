@@ -14,25 +14,22 @@
  * limitations under the License.
  */
 
-package griffon.plugins.xmlrpc
+package griffon.plugins.xmlrpc;
 
-import groovy.net.xmlrpc.XMLRPCServerProxy
+import griffon.util.CallableWithArgs;
+import groovy.lang.Closure;
+
+import java.util.Map;
 
 /**
  * @author Andres Almiray
  */
-@Singleton
-class XmlrpcConnector {
-    public createClient(Map params) {
-        def url = params.remove('url')
-        // def detectEncoding = params.remove('detectEncoding') ?: false
-        if(!url) {
-            throw new RuntimeException("Failed to create xml-rpc client, url: parameter is null or invalid.")
-        }
-        try {
-            return new XMLRPCServerProxy(url/*, detectEncoding*/)
-        } catch(MalformedURLException mue) {
-            throw new RuntimeException("Failed to create xml-rpc client, reason: $mue", mue)
-        }
-    }
+public interface XmlrpcContributionHandler {
+    void setXmlrpcProvider(XmlrpcProvider provider);
+
+    XmlrpcProvider getXmlrpcProvider();
+
+    <R> R withXmlrpc(Map<String, Object> params, Closure<R> closure);
+
+    <R> R withXmlrpc(Map<String, Object> params, CallableWithArgs<R> callable);
 }

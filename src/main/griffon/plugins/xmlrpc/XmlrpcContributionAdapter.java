@@ -24,8 +24,22 @@ import java.util.Map;
 /**
  * @author Andres Almiray
  */
-public interface XmlrpcProvider {
-    <R> R withXmlrpc(Map<String, Object> params, Closure<R> closure);
+public class XmlrpcContributionAdapter implements XmlrpcContributionHandler {
+    private XmlrpcProvider provider = DefaultXmlrpcProvider.getInstance();
 
-    <R> R withXmlrpc(Map<String, Object> params, CallableWithArgs<R> callable);
+    public void setXmlrpcProvider(XmlrpcProvider provider) {
+        this.provider = provider != null ? provider : DefaultXmlrpcProvider.getInstance();
+    }
+
+    public XmlrpcProvider getXmlrpcProvider() {
+        return provider;
+    }
+
+    public <R> R withXmlrpc(Map<String, Object> params, Closure<R> closure) {
+        return provider.withXmlrpc(params, closure);
+    }
+
+    public <R> R withXmlrpc(Map<String, Object> params, CallableWithArgs<R> callable) {
+        return provider.withXmlrpc(params, callable);
+    }
 }
