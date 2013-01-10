@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2012-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,21 +95,21 @@ public class XmlrpcAwareASTTransformation extends AbstractASTTransformation impl
     }
 
     protected static boolean needsXmlrpcContribution(ClassNode declaringClass, SourceUnit sourceUnit) {
-        boolean found1 = false, found2 = false, found3 = false, found4 = false, found5 = false;
+        boolean found1 = false, found2 = false, found3 = false;
         ClassNode consideredClass = declaringClass;
         while (consideredClass != null) {
             for (MethodNode method : consideredClass.getMethods()) {
                 // just check length, MOP will match it up
-                found2 = method.getName().equals(METHOD_WITH_XMLRPC) && method.getParameters().length == 2;
-                found4 = method.getName().equals(METHOD_SET_XMLRPC_PROVIDER) && method.getParameters().length == 1;
-                found5 = method.getName().equals(METHOD_GET_XMLRPC_PROVIDER) && method.getParameters().length == 0;
+                found1 = method.getName().equals(METHOD_WITH_XMLRPC) && method.getParameters().length == 2;
+                found2 = method.getName().equals(METHOD_SET_XMLRPC_PROVIDER) && method.getParameters().length == 1;
+                found3 = method.getName().equals(METHOD_GET_XMLRPC_PROVIDER) && method.getParameters().length == 0;
                 if (found1 && found2 && found3) {
                     return false;
                 }
             }
             consideredClass = consideredClass.getSuperClass();
         }
-        if (found1 || found2 || found3 || found4 || found5) {
+        if (found1 || found2 || found3) {
             sourceUnit.getErrorCollector().addErrorAndContinue(
                 new SimpleMessage("@XmlrpcAware cannot be processed on "
                     + declaringClass.getName()

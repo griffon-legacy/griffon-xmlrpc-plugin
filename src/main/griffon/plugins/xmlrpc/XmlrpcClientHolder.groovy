@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2012-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,16 +42,16 @@ class XmlrpcClientHolder {
 
     String[] getXmlrpcProxyIds() {
         List<String> ids = []
-        ids.addAll(HTTP.keySet())
+        ids.addAll(PROXIES.keySet())
         ids.toArray(new String[ids.size()])
     }
 
     XMLRPCServerProxy getXmlrpcProxy(String id) {
-        HTTP[id]
+        PROXIES[id]
     }
 
     void setXmlrpcProxy(String id, XMLRPCServerProxy client) {
-        HTTP[id] = client
+        PROXIES[id] = client
     }
 
     // ======================================================

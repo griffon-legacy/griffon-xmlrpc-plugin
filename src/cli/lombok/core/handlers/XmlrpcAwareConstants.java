@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2012-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,9 +33,7 @@ public interface XmlrpcAwareConstants extends BaseConstants {
     String XMLRPC_PROVIDER_FIELD_NAME = "this$xmlrpcProvider";
     String METHOD_GET_XMLRPC_PROVIDER = "getXmlrpcProvider";
     String METHOD_SET_XMLRPC_PROVIDER = "setXmlrpcProvider";
-    String METHOD_WITH_SOAP = "withSoap";
     String METHOD_WITH_XMLRPC = "withXmlrpc";
-    String METHOD_WITH_HTTP = "withHttp";
     String PROVIDER = "provider";
 
     MethodDescriptor[] METHODS = new MethodDescriptor[]{
