@@ -57,8 +57,10 @@ Usage
 
 The plugin will inject the following dynamic methods:
 
- * `<R> R withXmlrpc(Map<String, Object> params, Closure<R> stmts)` - executes stmts using a RESTClient
- * `<R> R withXmlrpc(Map<String, Object> params, CallableWithArgs<R> stmts)` - executes stmts using a RESTClient
+ * `<R> R withXmlrpc(Map<String, Object> params, Closure<R> stmts)` - executes
+   stmts using a XMLRPCServerProxy
+ * `<R> R withXmlrpc(Map<String, Object> params, CallableWithArgs<R> stmts)` - executes
+   stmts using a XMLRPCServerProxy
 
 Where params may contain
 
@@ -336,7 +338,7 @@ inside the `griffon-xmlrpc-compile-x.y.z.jar`, with locations
 ### Lombok Support
 
 Rewriting Java AST in a similar fashion to Groovy AST transformations is
-posisble thanks to the [lombok][4] plugin.
+possible thanks to the [lombok][4] plugin.
 
 #### JavaC
 
