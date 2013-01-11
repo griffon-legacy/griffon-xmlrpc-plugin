@@ -94,7 +94,7 @@ change this setting by adding a configuration flag in `griffon-app/conf/Config.g
 
     griffon.xmlrpc.injectInto = ['controller', 'service']
 
-Dynamic method injection wil skipped for classes implementing
+Dynamic method injection will be skipped for classes implementing
 `griffon.plugins.xmlrpc.XmlrpcContributionHandler`.
 
 ### Example
@@ -115,8 +115,9 @@ to configure the service on the Grails side:
 
         grails create-service calculator
 
-5. Paste the following code in `grails-app/services/exporter/CalculatorService.groovy`. Mind the fact that we're using the
-default package as the `Xmlrpc` class provided by the xmlrpc plugin is defined with no package
+5. Paste the following code in `grails-app/services/exporter/CalculatorService.groovy`.
+   Mind the fact that we're using the default package as the `Xmlrpc` class provided
+   by the xmlrpc plugin is defined with no package
 
         class CalculatorService extends Xmlrpc {
             boolean transactional = false
