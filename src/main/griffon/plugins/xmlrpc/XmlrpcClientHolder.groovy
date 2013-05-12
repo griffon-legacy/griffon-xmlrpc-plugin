@@ -34,11 +34,9 @@ class XmlrpcClientHolder {
         INSTANCE
     }
 
+    private XmlrpcClientHolder() {}
+
     private final Map<String, XMLRPCServerProxy> PROXIES = new ConcurrentHashMap<String, XMLRPCServerProxy>()
-
-    private XmlrpcClientHolder() {
-
-    }
 
     String[] getXmlrpcProxyIds() {
         List<String> ids = []

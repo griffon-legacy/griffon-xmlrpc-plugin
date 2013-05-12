@@ -34,6 +34,8 @@ public class DefaultXmlrpcProvider extends AbstractXmlrpcProvider {
         return INSTANCE;
     }
 
+    private DefaultXmlrpcProvider() {}
+
     @Override
     protected XMLRPCServerProxy getXmlrpcProxy(Map<String, Object> params) {
         return XmlrpcClientHolder.getInstance().fetchXmlrpcProxy(params);
